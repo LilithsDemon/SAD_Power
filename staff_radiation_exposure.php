@@ -32,7 +32,7 @@ $staff_id = (isset($_POST["staff_id"])) ? mysqli_real_escape_string($connect, $_
         // $staff_id only has a value when this file is called from staff_schedule.php
         // YOU WILL NEED TO USE $staff_check in your SQL query
         $staff_check = '';
-        if($staff_id)$staff_check = "WHERE `staff`.`id`= '$staff_id'";
+        if($staff_id)$staff_check = "WHERE `staff`.`id`= $staff_id";
         
         $sql = "SELECT `staff`.`id`, `staff`.`first_name`, `staff`.`last_name`, SUM(`job`.`radiation_exposure`) AS 'exposure' FROM `work_schedule` 
         LEFT JOIN `staff` ON `work_schedule`.`staff_id` = `staff`.`id` 
