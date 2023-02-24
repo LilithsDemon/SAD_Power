@@ -58,7 +58,7 @@ if($row = mysqli_fetch_assoc($result)){
         LEFT JOIN `location` ON `work_schedule`.`location_id` = `location`.`id`
         LEFT JOIN `weeks` ON `work_schedule`.`week_id` = `weeks`.`id`
         LEFT JOIN `days` ON `work_schedule`.`day_id` = `days`.`id`
-        WHERE `work_schedule`.`staff_id` = $staff_id AND `work_schedule`.`day_id` = $day;";    
+        WHERE `work_schedule`.`staff_id` = $staff_id;    
         // ========================== /YOUR SQL HERE
         
         $run = runAndCheckSQL($connect, $jobs_sql);
