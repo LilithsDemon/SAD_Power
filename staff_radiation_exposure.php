@@ -37,9 +37,11 @@ $staff_id = (isset($_POST["staff_id"])) ? mysqli_real_escape_string($connect, $_
         $sql = "SELECT `staff`.`id`, `staff`.`first_name`, `staff`.`last_name`, SUM(`job`.`radiation_exposure`) AS 'exposure' FROM `work_schedule` 
         LEFT JOIN `staff` ON `work_schedule`.`staff_id` = `staff`.`id` 
         LEFT JOIN `job` ON `work_schedule`.`job_id` = `job`.`id` 
+
+        $staff_check
         GROUP BY `staff`.`id` 
         ORDER BY `exposure` DESC
-        $staff_check ";    
+         ";    
         // ========================== /Task 4
 
 
