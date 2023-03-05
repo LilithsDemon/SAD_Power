@@ -113,6 +113,109 @@ function showWorkTable($week, $day,$connect){
 <?php
 }
 
+function getAllStaffRadiation($connect)
+{
+    $sql = "SELECT `staff`.`first_name`, `staff`.`last_name`, SUM(`job`.`radiation_exposure`) AS 'exposure' FROM `staff`  
+    LEFT JOIN `work_schedule` ON `work_schedule`.`staff_id` = `staff`.`id`
+    LEFT JOIN `job` ON `job`.`id` = `work_schedule`.`job_id`
+    GROUP BY `staff`.`id` 
+    ORDER BY `exposure` DESC;
+         ";
+
+    $run = runAndCheckSQL($connect,$sql);
+    $names = array();
+    $radiationValues = array();
+    while($row=mysqli_fetch_assoc($run)) { 
+        $level = $row["exposure"];
+        if($level == NULL)
+        {
+            $level = 0;
+        }
+        $name = $row["first_name"] . " " . $row["last_name"];
+        array_push($names, $name);
+        $perc = round(($level/350) * 100,2);
+        array_push($radiationValues, $perc);
+    }
+
+    ?>
+
+    <canvas id="radiationBarChart" style="width:100%;"></canvas>
+
+    <script>
+        var xValues = [
+            <?php 
+            $count = 0;
+            foreach($names as $name)
+            {
+                $count = $count + 1;
+                if($count != 1)
+                {
+                    echo ",";
+                }
+                echo '"' . $name . '"';
+            }
+            ?>
+        ]
+        var yValues = [
+            <?php 
+            $count = 0;
+            foreach($radiationValues as $rValue)
+            {
+                $count = $count + 1;
+                if($count != 1)
+                {
+                    echo ",";
+                }
+                echo $rValue;
+            }
+            ?>
+        ]
+        var barColors = [
+            <?php 
+            $count = 0;
+            foreach($radiationValues as $rValue)
+            {
+                $count = $count + 1;
+                if($count != 1)
+                {
+                    echo ",";
+                }
+                if($rValue < 1)
+                {
+                    echo '"green"';
+                }
+                elseif($rValue > 50)
+                {
+                    echo '"red"';
+                }
+                else
+                {
+                    echo '"orange"';
+                }
+            }
+            ?>
+        ]
+        new Chart("radiationBarChart", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+            }]
+        },
+        options: {
+            legend: {display: false},
+            title: {
+            display: false,
+            text: "Staff Radiation"
+            }
+        }
+        });
+    </script>
+    <?php
+}
+
 function showReactorTable($week, $reactor, $connect)
 {
 

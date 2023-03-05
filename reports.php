@@ -5,6 +5,8 @@ include_once("includes/nav.php");
 include_once("includes/utils.php");
 ?>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 <h2 class="mx-md mt-5">Week 1 Reactor Schedules</h2>
 
 <div class="row mt-2">
@@ -39,6 +41,12 @@ include_once("includes/utils.php");
 
 <?php staffButtons($connect); ?>
 <?php staffTimetable(1, $connect); ?>
+
+<h2 class="mx-md mt-5">Week 1 Employee Radiation</h2>
+
+<div class="card card-body">
+<?php getAllStaffRadiation($connect) ?>
+</div>
 
 <?php
 include_once("includes/footer.php"); 
